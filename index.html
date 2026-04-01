@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>运动健康 App 竞品分析 | 第一部分 + 第二部分</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            serif: ["Noto Serif SC", "serif"]
+          },
+          colors: {
+            brand: {
+              bg: "#F8F6F1",
+              dark: "#14281F",
+              gold: "#B88E4B",
+              soft: "#EFE8DC",
+              line: "#DDD4C7",
+              gray: "#6F6A63",
+              ink: "#2E2A24"
+            }
+          },
+          boxShadow: {
+            soft: "0 18px 40px rgba(20, 40, 31, 0.08)"
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body { background:#F8F6F1; color:#14281F; }
+    .glass-nav { background:rgba(248, 246, 241, 0.92); backdrop-filter:blur(10px); border-bottom:1px solid rgba(184,142,75,.18); }
+    .showcase-label { font-size:10px; text-transform:uppercase; letter-spacing:.18em; color:#B88E4B; font-weight:700; }
+    .section-intro { max-width:820px; font-size:15px; line-height:1.9; color:#6F6A63; }
+    .panel { background:#fff; border:1px solid rgba(20,40,31,.08); border-radius:28px; box-shadow:0 18px 40px rgba(20,40,31,.06); }
+    .soft-panel { background:#F7F2E8; border:1px solid rgba(184,142,75,.16); border-radius:24px; }
+    .logo-shell { width:84px; height:84px; border-radius:24px; display:flex; align-items:center; justify-content:center; background:#fff; border:1px solid rgba(20,40,31,.08); box-shadow:0 14px 28px rgba(20,40,31,.08); overflow:hidden; }
+    .logo-shell img { width:100%; height:100%; object-fit:contain; display:block; }
+    .app-card { display:flex; flex-direction:column; height:100%; transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+    .app-card:hover { transform:translateY(-4px); box-shadow:0 18px 36px rgba(20,40,31,.08); border-color:rgba(184,142,75,.4); }
+    .card-copy { display:flex; flex-direction:column; gap:10px; font-size:13px; line-height:1.85; color:#6F6A63; }
+    .card-copy > div { padding-top:10px; border-top:1px dashed rgba(184,142,75,.18); }
+    .card-copy > div:first-child { padding-top:0; border-top:none; }
+    .card-note { margin-top:2px; padding:12px 14px; border-radius:16px; background:#F7F2E8; border:1px solid rgba(184,142,75,.16); font-size:12px; line-height:1.7; color:#5D554C; }
+    .stat-chip { display:inline-flex; align-items:center; padding:6px 10px; border-radius:999px; background:#FFF7EB; border:1px solid rgba(184,142,75,.18); color:#8A6A36; font-size:11px; font-weight:700; }
+    .tag { display:inline-flex; align-items:center; padding:6px 10px; border-radius:999px; background:#F3EEE4; color:#5D554C; font-size:11px; font-weight:600; }
+    .agent-badge { display:inline-flex; align-items:center; gap:8px; padding:6px 12px 6px 6px; border-radius:999px; background:#fff; border:1px solid rgba(20,40,31,.08); box-shadow:0 8px 18px rgba(20,40,31,.05); }
+    .agent-badge img { width:28px; height:28px; border-radius:999px; object-fit:cover; display:block; background:#fff; }
+    .agent-card-head { display:flex; align-items:center; gap:14px; margin-bottom:18px; }
+    .agent-card-head img { width:56px; height:56px; border-radius:16px; object-fit:cover; background:#fff; border:1px solid rgba(20,40,31,.08); box-shadow:0 10px 20px rgba(20,40,31,.06); }
+    .table-agent { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .table-agent img { width:26px; height:26px; border-radius:999px; object-fit:cover; background:#fff; border:1px solid rgba(20,40,31,.08); }
+    .plan-mini { padding:14px 14px 12px; border-radius:18px; background:#FBF9F4; border:1px solid rgba(20,40,31,.08); }
+    .compare-table th, .compare-table td { padding:16px 18px; vertical-align:top; }
+    .compare-table thead th { background:#F3EEE4; color:#14281F; font-weight:700; }
+    .compare-table tbody tr:nth-child(even) td { background:#FBF9F4; }
+    .compare-table td { color:#5F5951; line-height:1.8; }
+    .compare-grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); }
+    .compare-card { background:#fff; border:1px solid rgba(20,40,31,.08); border-radius:24px; padding:20px; box-shadow:0 10px 24px rgba(20,40,31,.04); }
+    .compare-card-title { font-size:20px; font-weight:600; color:#14281F; margin-bottom:12px; }
+    .compare-lines { display:flex; flex-direction:column; gap:10px; font-size:13px; line-height:1.8; color:#6F6A63; }
+    .compare-row { padding-top:10px; border-top:1px dashed rgba(184,142,75,.18); }
+    .compare-row:first-child { padding-top:0; border-top:none; }
+    .compare-who { display:inline-flex; align-items:center; padding:4px 8px; border-radius:999px; background:#F3EEE4; color:#5D554C; font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-right:8px; }
+    .compare-judge { margin-top:14px; padding:12px 14px; border-radius:16px; background:#F7F2E8; border:1px solid rgba(184,142,75,.16); font-size:12px; line-height:1.7; color:#5D554C; }
+    .cost-grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); }
+    .fact-item { padding:16px 18px; border-radius:20px; background:#FBF9F4; border:1px solid rgba(20,40,31,.08); }
+    .source-link { color:#8A6A36; text-decoration:none; }
+    .source-link:hover { text-decoration:underline; }
+  </style>
+</head>
+<body class="font-sans antialiased">
+  <nav class="fixed top-0 w-full z-50 glass-nav">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="font-serif font-bold text-xl tracking-tight text-brand-dark">
+        Luminaire
+        <span class="font-sans text-xs font-normal uppercase tracking-widest text-brand-gold ml-2">Portfolio</span>
+      </div>
+      <div class="hidden md:flex space-x-8 text-sm font-medium text-brand-gray">
+        <a href="#part1" class="hover:text-brand-dark transition-colors">第一部分</a>
+        <a href="#part2" class="hover:text-brand-dark transition-colors">第二部分</a>
+        <a href="#agents" class="hover:text-brand-dark transition-colors">Keep 教练</a>
+        <a href="#ux" class="hover:text-brand-dark transition-colors">体验</a>
+        <a href="#cost" class="hover:text-brand-dark transition-colors">成本</a>
+        <a href="#sources" class="hover:text-brand-dark transition-colors">资料</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="pt-36 pb-20 px-6 max-w-7xl mx-auto">
+    <div class="max-w-5xl">
+        <p class="text-xs font-bold uppercase tracking-[0.2em] text-brand-gold mb-6 flex items-center gap-4">
+          <span class="w-8 h-[1px] bg-brand-gold"></span>
+          AI Fitness Research
+        </p>
+        <h1 class="font-serif text-[56px] md:text-[92px] font-semibold tracking-[-0.04em] text-brand-dark leading-[0.92] mb-6">
+          运动健康 App
+          <br>竞品研究
+          <br>与 AI 路线拆解
+        </h1>
+    </div>
+  </header>
+
+  <section id="part1" class="py-18 bg-brand-bg">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-12">
+        <p class="showcase-label mb-4">竞品总览</p>
+        <h2 class="font-serif text-3xl md:text-4xl text-brand-dark mb-4">主要竞品的核心特点</h2>
+        <p class="section-intro">这一部分只看一件事：每款 App 最强的地方是什么、最弱的地方是什么、它真正抢的是哪种用户心智。</p>
+      </div>
+
+      <div class="mb-6">
+        <p class="showcase-label mb-3">China</p>
+        <h3 class="font-serif text-2xl md:text-3xl text-brand-dark mb-2">国内 App</h3>
+        <p class="section-intro">Keep、薄荷健康、硬汗健身更偏内容或管理服务；华为和小米更像绑定手表生态的健康记录后台。</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-5">
+        <article class="app-card panel p-6">
+          <div class="flex items-center gap-4 mb-5">
+            <div class="logo-shell" style="width:76px;height:76px;">
+              <img src="assets/app-logos/keep.png" alt="Keep logo">
+            </div>
+            <div>
+              <p class="showcase-label mb-1">01 · China</p>
+              <h3 class="text-2xl font-semibold text-brand-dark">Keep</h3>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="stat-chip">AI 运动教练</span>
+            <span class="stat-chip">Kinetic.ai</span>
+          </div>
+          <div class="card-copy">
+            <div><strong class="text-brand-dark">定位：</strong>从综合训练平台升级为更强调 AI 教练的运动入口。</div>
+            <div><strong class="text-brand-dark">优势：</strong>Keep 现在最值得看的不是课程库本身，而是 `卡卡`、`NRC 跑步教练`、`小柯老师` 组成的多教练 AI 体系。它把陪跑、体测、能力分析和计划生成做成了明确的智能体入口，AI 不再只是点缀，而是主卖点。</div>
+            <div><strong class="text-brand-dark">短板：</strong>很多原本免费可看的内容逐步转到会员后，付费墙感知更强，这是它当前最明显的流失点，也会削弱老用户对平台的好感。</div>
+            <div class="card-note"><strong class="text-brand-dark">观察：</strong>Keep 在 App Store 已直接写成 `AI 运动教练`，而你给的截图也说明它正把 AI 教练切换、语音陪跑和体测计划放到前台。</div>
+          </div>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="tag">AI 智能体</span>
+            <span class="tag">卡卡 / 小柯 / NRC</span>
+            <span class="tag">语音陪跑</span>
+            <span class="tag">体测计划</span>
+            <span class="tag">会员墙</span>
+          </div>
+        </article>
+
+        <article class="app-card panel p-6">
+          <div class="flex items-center gap-4 mb-5">
+            <div class="logo-shell" style="width:76px;height:76px;">
+              <img src="assets/app-logos/boohee.png" alt="薄荷健康 logo">
+            </div>
+            <div>
+              <p class="showcase-label mb-1">02 · China</p>
+              <h3 class="text-2xl font-semibold text-brand-dark">薄荷健康</h3>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="stat-chip">1亿+ 用户</span>
+            <span class="stat-chip">App Store 4.7 / 12万评分</span>
+          </div>
+          <div class="card-copy">
+            <div><strong class="text-brand-dark">定位：</strong>健康管理型智能体平台，但商业感很强。</div>
+            <div><strong class="text-brand-dark">优势：</strong>`薄荷体管师` 的核心不是训练，而是围绕吃、记录和控体重做服务。拍照记录、体重体脂围度、喝水提醒、食物库和减脂建议串得比较完整，更像一个健康管理助手。</div>
+            <div><strong class="text-brand-dark">短板：</strong>用户实际感知里，它更像“借健康管理来带商品转化”的产品。AI 更偏记录和提醒，决策感一般；热量扫描和非标准食物识别也常被吐槽只能作参考。</div>
+            <div class="card-note"><strong class="text-brand-dark">观察：</strong>薄荷的服务逻辑是成立的，但最终最强的仍然是 `记录 + 食物库 + 商店` 这条链，所以看起来更像健康消费平台，而不是纯粹的智能健康教练。</div>
+          </div>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="tag">AI 体管师</span>
+            <span class="tag">拍照记录</span>
+            <span class="tag">体重 / 喝水</span>
+            <span class="tag">热量扫描</span>
+            <span class="tag">商城</span>
+          </div>
+        </article>
+
+        <article class="app-card panel p-6">
+          <div class="flex items-center gap-4 mb-5">
+            <div class="logo-shell" style="width:76px;height:76px;">
+              <img src="assets/app-logos/yinghan.png" alt="硬汗健身 logo">
+            </div>
+            <div>
+              <p class="showcase-label mb-1">03 · China</p>
+              <h3 class="text-2xl font-semibold text-brand-dark">硬汗健身</h3>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="stat-chip">App Store 4.6 / 2.9万评分</span>
+            <span class="stat-chip">月费约 ¥48</span>
+          </div>
+          <div class="card-copy">
+            <div><strong class="text-brand-dark">定位：</strong>以动作教学和跟练内容为核心的垂直健身教学 App。</div>
+            <div><strong class="text-brand-dark">优势：</strong>动作库分类做得很细，按部位、难度和器械拆得清楚，教练视频也比较全，适合想系统学力量训练、器械训练的人自己跟着练。</div>
+            <div><strong class="text-brand-dark">短板：</strong>免费内容不多，核心内容主要靠会员和线上教学视频解锁，价格感知偏高；官方强调 AI 计划，但真实产品力更强的还是教学库，不是强社区或强生态产品。</div>
+            <div class="card-note"><strong class="text-brand-dark">观察：</strong>它看起来更像“健身教学内容平台”而不是智能教练平台，整体内容气质也明显更偏男性增肌用户。</div>
+          </div>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="tag">动作库</span>
+            <span class="tag">教练视频</span>
+            <span class="tag">器械教学</span>
+            <span class="tag">会员变现</span>
+            <span class="tag">偏男性增肌</span>
+          </div>
+        </article>
+
+        <article class="app-card panel p-6">
+          <div class="flex items-center gap-4 mb-5">
+            <div class="flex items-center -space-x-3">
+              <div class="logo-shell" style="width:64px;height:64px;">
+                <img src="assets/app-logos/huawei-health.png" alt="华为运动健康 logo">
+              </div>
+              <div class="logo-shell" style="width:64px;height:64px;">
+                <img src="assets/app-logos/xiaomi-fitness.png" alt="小米运动健康 logo">
+              </div>
+            </div>
+            <div>
+              <p class="showcase-label mb-1">04-05 · China</p>
+              <h3 class="text-2xl font-semibold text-brand-dark">华为运动健康 × 小米运动健康</h3>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="stat-chip">设备生态型 App</span>
+            <span class="stat-chip">手表 / 手环后台</span>
+          </div>
+          <div class="card-copy">
+            <div><strong class="text-brand-dark">定位：</strong>和华为 / 小米手表、手环深度绑定的健康记录与运动后台。</div>
+            <div><strong class="text-brand-dark">优势：</strong>它们更强的不是像 Keep 那样做精细化训练，而是记录运动时间、步数、心率、睡眠和日常健康数据。华为更强在健康指标和高端设备能力完整，小米更强在大众入口和低门槛覆盖。</div>
+            <div><strong class="text-brand-dark">短板：</strong>一旦离开自家设备，吸引力就会明显下降；训练计划、内容深度和社区讨论都不算强，更像设备陪伴型 App。</div>
+            <div class="card-note"><strong class="text-brand-dark">观察：</strong>对我们来说，华为和小米更像“设备入口竞品”而不是“训练内容竞品”。它们抢的是手表生态和健康记录心智，不是 Keep 式的精细训练心智。</div>
+          </div>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="tag">手表后台</span>
+            <span class="tag">运动记录</span>
+            <span class="tag">健康监测</span>
+            <span class="tag">设备生态</span>
+            <span class="tag">非精细训练</span>
+          </div>
+        </article>
+      </div>
+
+      <div class="mt-14 mb-6">
+        <p class="showcase-label mb-3">Overseas</p>
+        <h3 class="font-serif text-2xl md:text-3xl text-brand-dark mb-2">海外 App</h3>
+        <p class="section-intro">海外这组更容易分成三条路线：Strava 做运动社交，Garmin Connect 做手表后台，Freeletics 做数字私教。</p>
+      </div>
+
+      <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+        <article class="app-card panel p-6">
+          <div class="flex items-center gap-4 mb-5">
+            <div class="logo-shell" style="width:76px;height:76px;">
+              <img src="assets/app-logos/strava.png" alt="Strava logo">
+            </div>
+            <div>
+              <p class="showcase-label mb-1">06 · Overseas</p>
+              <h3 class="text-2xl font-semibold text-brand-dark">Strava</h3>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="stat-chip">社区 + Segments</span>
+            <span class="stat-chip">路线地图</span>
+          </div>
+          <div class="card-copy">
+            <div><strong class="text-brand-dark">定位：</strong>运动社交网络，不是纯记录工具。</div>
+            <div><strong class="text-brand-dark">优势：</strong>最强在社区、`Segments` 分段竞争、挑战和路线地图，能把一次运动变成持续互动。真正让用户留下来的，不是记录本身，而是“记录后有人看、同一路有人比、同一城有人一起动”。</div>
+            <div><strong class="text-brand-dark">短板：</strong>不是最强健康中台，也不是最强精细训练计划产品。AI、Beacon、Live Segments 和多运动类型是加分项，但不是主心智。</div>
+            <div class="card-note"><strong class="text-brand-dark">观察：</strong>Strava 受欢迎，不是因为功能最多，而是因为它让运动变得可见、可比、可参与。</div>
+          </div>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="tag">社区</span>
+            <span class="tag">Segments</span>
+            <span class="tag">挑战</span>
+            <span class="tag">路线地图</span>
+            <span class="tag">多设备接入</span>
+          </div>
+        </article>
+
+        <article class="app-card panel p-6">
+          <div class="flex items-center gap-4 mb-5">
+            <div class="logo-shell" style="width:76px;height:76px;">
+              <img src="assets/app-logos/garmin-connect.png" alt="Garmin Connect logo">
+            </div>
+            <div>
+              <p class="showcase-label mb-1">07 · Overseas</p>
+              <h3 class="text-2xl font-semibold text-brand-dark">Garmin Connect</h3>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="stat-chip">10M+ 下载</span>
+            <span class="stat-chip">训练与恢复系统</span>
+          </div>
+          <div class="card-copy">
+            <div><strong class="text-brand-dark">定位：</strong>Garmin 设备驱动的训练与恢复后台。</div>
+            <div><strong class="text-brand-dark">优势：</strong>它最强的不是社区，而是训练解释层。手表和传感器采到的数据会在这里被转成 `Training Readiness`、`Recovery Time`、`Body Battery`、训练趋势和课程同步，所以对认真训练的人很有吸引力。</div>
+            <div><strong class="text-brand-dark">短板：</strong>强依赖 Garmin 硬件，离开自家设备后吸引力会下降；社区传播和内容感也明显弱于 Strava 这类产品。</div>
+            <div class="card-note"><strong class="text-brand-dark">观察：</strong>Garmin Connect 受欢迎，不是因为它最热闹，而是因为它最像认真训练者的“运动操作系统”。</div>
+          </div>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="tag">设备后台</span>
+            <span class="tag">恢复建议</span>
+            <span class="tag">Training Readiness</span>
+            <span class="tag">Body Battery</span>
+            <span class="tag">硬件绑定</span>
+          </div>
+        </article>
+
+        <article class="app-card panel p-6">
+          <div class="flex items-center gap-4 mb-5">
+            <div class="logo-shell" style="width:76px;height:76px;">
+              <img src="assets/app-logos/freeletics.png" alt="Freeletics logo">
+            </div>
+            <div>
+              <p class="showcase-label mb-1">08 · Overseas</p>
+              <h3 class="text-2xl font-semibold text-brand-dark">Freeletics</h3>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="stat-chip">AI Coach</span>
+            <span class="stat-chip">个性化训练计划</span>
+          </div>
+          <div class="card-copy">
+            <div><strong class="text-brand-dark">定位：</strong>AI 驱动的个性化训练教练。</div>
+            <div><strong class="text-brand-dark">优势：</strong>最强在 `AI Coach + 个性化训练计划 + 多场景适配`。它不是靠社区取胜，而是持续给用户“下一次该怎么练”的明确答案，更像真正带着用户往前走的数字私教。</div>
+            <div><strong class="text-brand-dark">短板：</strong>社区感和设备生态都不强，吸引力主要来自训练计划本身，不像 Strava 靠社交，也不像 Garmin 靠硬件。</div>
+            <div class="card-note"><strong class="text-brand-dark">观察：</strong>Freeletics 受欢迎，不是因为功能最多，而是因为它把训练计划这件事做得最像“有人在带你练”。</div>
+          </div>
+          <div class="mt-5 flex flex-wrap gap-2">
+            <span class="tag">AI Coach</span>
+            <span class="tag">训练计划</span>
+            <span class="tag">个性化</span>
+            <span class="tag">居家训练</span>
+            <span class="tag">弱社区</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="part2" class="py-16 bg-brand-bg border-t border-brand-line/60">
+    <div class="max-w-7xl mx-auto px-6 pb-8">
+      <p class="showcase-label mb-4">AI 双样本</p>
+      <h2 class="font-serif text-4xl md:text-5xl text-brand-dark mb-4">Keep 与 Freeletics 的 AI 路线拆解</h2>
+      <p class="section-intro">
+        第二部分只拆两条最值得看的 AI 路线：Keep 的多智能体入口，和 Freeletics 的单 AI Coach 计划引擎。
+      </p>
+    </div>
+  </section>
+
+  <section id="overview" class="py-18 bg-brand-bg">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-12">
+        <p class="showcase-label mb-4">双样本总览</p>
+        <h2 class="font-serif text-3xl md:text-4xl text-brand-dark mb-4">先把两条 AI 路线和付费结构看清楚</h2>
+        <p class="section-intro">
+          Keep 和 Freeletics 都在讲 AI，但产品逻辑完全不同。Keep 的重点是让用户一眼看到 AI，可以直接切到 KAKA、小柯老师和 NRC 跑步教练；Freeletics 的重点是让用户持续被 AI 安排训练，用一个 AI Coach 和计划引擎稳定带练。再往下一层看，两者的付费卖法也完全不同：Keep 更像低门槛会员解锁，Freeletics 则是 `Training Coach -> Training + Nutrition Bundle -> Super Bundle` 的升级式订阅结构。
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-6 mb-10">
+        <article class="panel p-8">
+          <div class="flex items-center gap-5 mb-6">
+            <div class="logo-shell">
+              <img src="assets/app-logos/keep.png" alt="Keep logo">
+            </div>
+            <div>
+              <p class="showcase-label mb-1">China</p>
+              <h3 class="text-3xl font-semibold text-brand-dark">Keep</h3>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="stat-chip">4.9 / 294.7 万评分</span>
+            <span class="stat-chip">连续包月 ¥19</span>
+            <span class="stat-chip">2026-03-25 年报</span>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="agent-badge"><img src="assets/app-logos/kaka.jpg" alt="KAKA avatar"><span class="text-xs font-semibold text-brand-dark">KAKA</span></span>
+            <span class="agent-badge"><img src="assets/app-logos/xiaoke.jpg" alt="小柯老师 avatar"><span class="text-xs font-semibold text-brand-dark">小柯老师</span></span>
+            <span class="agent-badge"><img src="assets/app-logos/nrc-coach.jpg" alt="NRC 跑步教练 avatar"><span class="text-xs font-semibold text-brand-dark">NRC 跑步教练</span></span>
+          </div>
+          <div class="space-y-4 text-[15px] leading-8 text-brand-gray">
+            <div><strong class="text-brand-dark">一句话：</strong>多智能体运动入口，强在“AI 看得见”。</div>
+            <div><strong class="text-brand-dark">主心智：</strong>卡卡、小柯老师、NRC 跑步教练、语音陪跑，把 AI 做成多个具体角色和服务入口。</div>
+            <div><strong class="text-brand-dark">最强价值：</strong>陪伴感、任务感、体测分析、跑步场景、图片记录，都能被包装成前台可感知的智能体体验。</div>
+            <div><strong class="text-brand-dark">付费结构：</strong>低门槛会员是主入口，很多 AI 教练能力、语音陪跑和深度服务都和会员墙绑得更紧。</div>
+            <div><strong class="text-brand-dark">核心问题：</strong>入口多、会员墙明显、角色边界容易重叠，用户很容易先看到“形式”，再追问“深度”。</div>
+          </div>
+        </article>
+
+        <article class="panel p-8">
+          <div class="flex items-center gap-5 mb-6">
+            <div class="logo-shell">
+              <img src="assets/app-logos/freeletics.png" alt="Freeletics logo">
+            </div>
+            <div>
+              <p class="showcase-label mb-1">Overseas</p>
+              <h3 class="text-3xl font-semibold text-brand-dark">Freeletics</h3>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="stat-chip">60M users</span>
+            <span class="stat-chip">450M sessions</span>
+            <span class="stat-chip">AI Coach</span>
+          </div>
+          <div class="grid sm:grid-cols-3 gap-3 mb-6">
+            <div class="plan-mini">
+              <div class="showcase-label mb-2">Plan 1</div>
+              <div class="text-sm font-semibold text-brand-dark mb-2">Training Coach</div>
+              <p class="text-xs leading-6 text-brand-gray">Daily guidance、performance tracking、个性化训练计划与日常带练。</p>
+            </div>
+            <div class="plan-mini">
+              <div class="showcase-label mb-2">Plan 2</div>
+              <div class="text-sm font-semibold text-brand-dark mb-2">Training + Nutrition</div>
+              <p class="text-xs leading-6 text-brand-gray">在训练之外再卖营养计划、食物数据库、营养跟踪和 meal-prep 清单。</p>
+            </div>
+            <div class="plan-mini">
+              <div class="showcase-label mb-2">Plan 3</div>
+              <div class="text-sm font-semibold text-brand-dark mb-2">Super Bundle</div>
+              <p class="text-xs leading-6 text-brand-gray">把训练、营养、心理、柔韧性和多个 partner apps 打包成整体健康套餐。</p>
+            </div>
+          </div>
+          <div class="space-y-4 text-[15px] leading-8 text-brand-gray">
+            <div><strong class="text-brand-dark">一句话：</strong>单 AI Coach 计划引擎，强在“AI 真的能持续带你练”。</div>
+            <div><strong class="text-brand-dark">主心智：</strong>评估、生成 Training Journey、根据反馈自适应调整，而不是多角色切换。</div>
+            <div><strong class="text-brand-dark">最强价值：</strong>计划连续性清楚，用户更容易理解“下一次该怎么练”。</div>
+            <div><strong class="text-brand-dark">付费结构：</strong>核心是 `Training Coach`，再往上是 `Training + Nutrition Bundle` 和 `Super Bundle`，本质是把训练计划卖成高客单价订阅包。</div>
+            <div><strong class="text-brand-dark">核心问题：</strong>人格感弱、趣味感弱、社区弱，第一眼没有 Keep 那么会“演示 AI”。</div>
+          </div>
+        </article>
+      </div>
+
+      <div class="compare-grid">
+        <article class="compare-card">
+          <h3 class="compare-card-title">产品心智</h3>
+          <div class="compare-lines">
+            <div class="compare-row"><span class="compare-who">Keep</span>AI 运动入口</div>
+            <div class="compare-row"><span class="compare-who">Freeletics</span>AI 个性化训练教练</div>
+          </div>
+          <div class="compare-judge"><strong class="text-brand-dark">判断：</strong>Keep 更“前台”，Freeletics 更“后台”。</div>
+        </article>
+
+        <article class="compare-card">
+          <h3 class="compare-card-title">AI 形态</h3>
+          <div class="compare-lines">
+            <div class="compare-row">
+              <span class="compare-who">Keep</span>
+              <div class="table-agent inline-flex">
+                <img src="assets/app-logos/kaka.jpg" alt="KAKA avatar">
+                <img src="assets/app-logos/xiaoke.jpg" alt="小柯老师 avatar">
+                <img src="assets/app-logos/nrc-coach.jpg" alt="NRC 跑步教练 avatar">
+                <span>KAKA / 小柯 / NRC，多教练 / 多角色 / 多入口</span>
+              </div>
+            </div>
+            <div class="compare-row"><span class="compare-who">Freeletics</span>单一 AI Coach / 计划引擎</div>
+          </div>
+          <div class="compare-judge"><strong class="text-brand-dark">判断：</strong>Keep 偏人格化，Freeletics 偏系统化。</div>
+        </article>
+
+        <article class="compare-card">
+          <h3 class="compare-card-title">最强价值</h3>
+          <div class="compare-lines">
+            <div class="compare-row"><span class="compare-who">Keep</span>陪伴、体测、跑步、图片记录、前台展示感</div>
+            <div class="compare-row"><span class="compare-who">Freeletics</span>评估、计划、反馈、自适应训练</div>
+          </div>
+          <div class="compare-judge"><strong class="text-brand-dark">判断：</strong>Keep 解决“AI 怎么被感知”，Freeletics 解决“AI 怎么稳定推进训练”。</div>
+        </article>
+
+        <article class="compare-card">
+          <h3 class="compare-card-title">用户感知</h3>
+          <div class="compare-lines">
+            <div class="compare-row"><span class="compare-who">Keep</span>容易看到 AI 在说话</div>
+            <div class="compare-row"><span class="compare-who">Freeletics</span>容易感觉有人在带你练</div>
+          </div>
+          <div class="compare-judge"><strong class="text-brand-dark">判断：</strong>Keep 是惊艳型，Freeletics 是连续型。</div>
+        </article>
+
+        <article class="compare-card">
+          <h3 class="compare-card-title">设备关系</h3>
+          <div class="compare-lines">
+            <div class="compare-row"><span class="compare-who">Keep</span>聚合第三方设备，不靠自有手表</div>
+            <div class="compare-row"><span class="compare-who">Freeletics</span>有 Watch / Health 支持，但不是核心 moat</div>
+          </div>
+          <div class="compare-judge"><strong class="text-brand-dark">判断：</strong>两者都不是设备生态型产品。</div>
+        </article>
+
+        <article class="compare-card">
+          <h3 class="compare-card-title">商业结构</h3>
+          <div class="compare-lines">
+            <div class="compare-row"><span class="compare-who">Keep</span>低价会员 + K 币 + 场景分层 + 运动消费</div>
+            <div class="compare-row"><span class="compare-who">Freeletics</span>高客单订阅 + Bundle</div>
+          </div>
+          <div class="compare-judge"><strong class="text-brand-dark">判断：</strong>Keep 更复杂，Freeletics 更纯订阅。</div>
+        </article>
+
+        <article class="compare-card md:col-span-2 xl:col-span-3">
+          <h3 class="compare-card-title">付费内容</h3>
+          <div class="compare-lines md:grid md:grid-cols-2 md:gap-4">
+            <div class="compare-row md:border-t-0 md:pt-0"><span class="compare-who">Keep</span>会员解锁 AI 教练能力、语音陪跑、计划深度和更多内容服务。</div>
+            <div class="compare-row"><span class="compare-who">Freeletics</span>`Training Coach` 卖训练计划；`Training + Nutrition Bundle` 加营养；`Super Bundle` 进一步卖 7 个应用的整体健康包。</div>
+          </div>
+          <div class="compare-judge"><strong class="text-brand-dark">判断：</strong>Keep 更像“先低门槛进来，再逐步加墙”；Freeletics 更像“从一开始就卖完整订阅价值”。</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="agents" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-12">
+        <p class="showcase-label mb-4">Keep 教练体系</p>
+        <h2 class="font-serif text-3xl md:text-4xl text-brand-dark mb-4">Keep 的三位教练，分工其实很清楚</h2>
+        <p class="section-intro">
+          你给的截图最有价值的地方，是把 Keep 的 AI 不同角色直接暴露出来了。它不是一个模糊的“AI 助手”，而是三种明确的服务分工。
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
+        <article class="panel p-7">
+          <div class="agent-card-head">
+            <img src="assets/app-logos/kaka.jpg" alt="KAKA avatar">
+            <div>
+              <p class="showcase-label mb-2">General Coach</p>
+              <h3 class="text-2xl font-semibold text-brand-dark">KAKA</h3>
+            </div>
+          </div>
+          <div class="space-y-4 text-sm leading-7 text-brand-gray">
+            <div><strong class="text-brand-dark">负责什么：</strong>通用型 AI 教练，负责“今天怎么动、怎么记、怎么继续坚持”。</div>
+            <div><strong class="text-brand-dark">可以做什么：</strong>智能运动方案、智能训练指导、个性化跑步实时语音指导、图片识别与记录。</div>
+            <div><strong class="text-brand-dark">会生成什么：</strong>训练方案、可加进日历的计划、训练建议、饮食或数据记录结果。</div>
+            <div class="soft-panel p-4 text-[12px] leading-6 text-[#5D554C]">
+              <strong class="text-brand-dark">判断：</strong>这是 Keep 最重要的 AI 门面。优点是感知强，风险是边界太宽后容易被用户追问“到底有没有真深度”。
+            </div>
+          </div>
+        </article>
+
+        <article class="panel p-7">
+          <div class="agent-card-head">
+            <img src="assets/app-logos/xiaoke.jpg" alt="小柯老师 avatar">
+            <div>
+              <p class="showcase-label mb-2">Assessment Coach</p>
+              <h3 class="text-2xl font-semibold text-brand-dark">小柯老师</h3>
+            </div>
+          </div>
+          <div class="space-y-4 text-sm leading-7 text-brand-gray">
+            <div><strong class="text-brand-dark">负责什么：</strong>体测 / 体考专项教练。</div>
+            <div><strong class="text-brand-dark">可以做什么：</strong>生成体测计划、项目分析、能力分析、长期记录成绩。</div>
+            <div><strong class="text-brand-dark">会生成什么：</strong>体测专项训练计划、项目推荐、能力报告解读、成绩变化记录。</div>
+            <div class="soft-panel p-4 text-[12px] leading-6 text-[#5D554C]">
+              <strong class="text-brand-dark">判断：</strong>它的价值不是“更会聊天”，而是把一个非常明确的任务做深，所以付费理由反而更好讲。
+            </div>
+          </div>
+        </article>
+
+        <article class="panel p-7">
+          <div class="agent-card-head">
+            <img src="assets/app-logos/nrc-coach.jpg" alt="NRC 跑步教练 avatar">
+            <div>
+              <p class="showcase-label mb-2">Running Coach</p>
+              <h3 class="text-2xl font-semibold text-brand-dark">NRC 跑步教练</h3>
+            </div>
+          </div>
+          <div class="space-y-4 text-sm leading-7 text-brand-gray">
+            <div><strong class="text-brand-dark">负责什么：</strong>跑步专项教练，强调 Nike 训练方法论。</div>
+            <div><strong class="text-brand-dark">可以做什么：</strong>生成跑步计划、在线指导、下肢灵活性评估、单腿稳定性评估。</div>
+            <div><strong class="text-brand-dark">会生成什么：</strong>跑步方案、专项评估结果、专项指导。</div>
+            <div class="soft-panel p-4 text-[12px] leading-6 text-[#5D554C]">
+              <strong class="text-brand-dark">判断：</strong>这是最典型的单场景增强器，价值很容易理解，但吸引力高度依赖用户是否真的跑步。
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="panel p-7 mt-6">
+        <p class="showcase-label mb-3">Voice Layer</p>
+        <h3 class="text-2xl font-semibold text-brand-dark mb-4">语音陪跑，不像严肃教练，更像“高德语音包式陪伴”</h3>
+        <div class="grid lg:grid-cols-2 gap-6 text-sm leading-7 text-brand-gray">
+          <div>
+            <p class="mb-3"><strong class="text-brand-dark">从截图能看到的入口：</strong>`语音陪跑（会员）`、`特邀陪跑员`、`轻松跑（限免体验）`。</p>
+            <p><strong class="text-brand-dark">产品意义：</strong>把跑步时的指导从纯数据播报，做成带情绪和人格的陪伴层，逻辑更接近高德语音包，而不是传统训练计划软件。</p>
+          </div>
+          <div>
+            <p class="mb-3"><strong class="text-brand-dark">好处：</strong>新鲜感强、留存好、容易被用户记住，特别适合跑步这种重复场景。</p>
+            <p><strong class="text-brand-dark">风险：</strong>它提升的是情绪价值，不等于提升专业指导深度；如果语音层比建议层更抢眼，用户会把它当成“玩法”，而不是“教练”。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ux" class="py-20 bg-brand-bg">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-12">
+        <p class="showcase-label mb-4">体验对比</p>
+        <h2 class="font-serif text-3xl md:text-4xl text-brand-dark mb-4">真正的差别，不在“有没有 AI”，而在“AI 怎么被体验到”</h2>
+        <p class="section-intro">
+          Keep 和 Freeletics 都有 AI，但两者的 UX 判断非常不同。一个更像会说话的服务系统，一个更像不会打扰你的训练系统。
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-6">
+        <article class="panel p-8">
+          <p class="showcase-label mb-3">Keep UX</p>
+          <h3 class="text-2xl font-semibold text-brand-dark mb-5">前台感强，情绪价值高，但容易变碎</h3>
+          <div class="space-y-4 text-sm leading-7 text-brand-gray">
+            <div><strong class="text-brand-dark">入口体验：</strong>教练切换、角色头像、技能列表、升级会员按钮都很直观，用户一眼能看到 AI。</div>
+            <div><strong class="text-brand-dark">情绪体验：</strong>有陪伴、有“被服务”的感觉，语音陪跑尤其容易制造新鲜感。</div>
+            <div><strong class="text-brand-dark">认知负担：</strong>角色越多，越容易让用户想问“我到底该找谁”。</div>
+            <div><strong class="text-brand-dark">连续性问题：</strong>如果每个角色各管一段，长期教练关系反而不容易沉淀。</div>
+          </div>
+        </article>
+
+        <article class="panel p-8">
+          <p class="showcase-label mb-3">Freeletics UX</p>
+          <h3 class="text-2xl font-semibold text-brand-dark mb-5">人格感弱，但训练连续性更稳</h3>
+          <div class="space-y-4 text-sm leading-7 text-brand-gray">
+            <div><strong class="text-brand-dark">入口体验：</strong>没有多教练切换，用户更多感知到的是评估、计划和训练反馈闭环。</div>
+            <div><strong class="text-brand-dark">情绪体验：</strong>没有 Keep 那种“语音包式陪伴”，但更像一个稳定的数字私教。</div>
+            <div><strong class="text-brand-dark">认知负担：</strong>更低，用户知道自己就是来拿计划并执行。</div>
+            <div><strong class="text-brand-dark">连续性优势：</strong>AI 不在前台演人格，而是在后台决定下一次训练怎么改，所以更像“长期带练”。</div>
+          </div>
+        </article>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-5 mt-6">
+        <div class="soft-panel p-6">
+          <p class="showcase-label mb-2">My Take</p>
+          <h4 class="text-lg font-semibold text-brand-dark mb-3">如果目标是“让用户第一眼觉得 AI 很厉害”</h4>
+          <p class="text-sm leading-7 text-[#5D554C]">Keep 更值得看，因为它把 AI 做成了角色和服务界面。</p>
+        </div>
+        <div class="soft-panel p-6">
+          <p class="showcase-label mb-2">My Take</p>
+          <h4 class="text-lg font-semibold text-brand-dark mb-3">如果目标是“让用户长期按计划训练”</h4>
+          <p class="text-sm leading-7 text-[#5D554C]">Freeletics 更值得看，因为它把计划闭环做得更像真正的教练系统。</p>
+        </div>
+        <div class="soft-panel p-6">
+          <p class="showcase-label mb-2">My Take</p>
+          <h4 class="text-lg font-semibold text-brand-dark mb-3">如果目标是“找产品突破口”</h4>
+          <p class="text-sm leading-7 text-[#5D554C]">Keep 提供前台智能体样本，Freeletics 提供后台计划引擎样本，二者可以组合着学，而不是二选一照搬。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cost" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-12">
+        <p class="showcase-label mb-4">成本与复杂度</p>
+        <h2 class="font-serif text-3xl md:text-4xl text-brand-dark mb-4">成本要分两层看：用户价格，与产品侧复杂度</h2>
+        <p class="section-intro">
+          公开资料只能告诉我们用户价格，不能告诉我们真实内部成本。所以这里把“成本”拆成两层：一层是用户实际支付，一层是基于产品形态做的复杂度推断。
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-6 mb-6">
+        <article class="panel p-8">
+          <p class="showcase-label mb-3">User Price</p>
+          <h3 class="text-2xl font-semibold text-brand-dark mb-5">用户价格</h3>
+          <div class="space-y-5 text-sm leading-7 text-brand-gray">
+            <div>
+              <div class="font-semibold text-brand-dark mb-2">Keep</div>
+              <div>中国 App Store 当前公开价格为：</div>
+              <div>连续包月 `¥19`、连续包季 `¥58`、连续包年 `¥218`，另有 `K 币` 充值。</div>
+              <div class="text-xs text-brand-gray">它的核心感知是“先低门槛进来”，但很多 AI 教练能力、语音陪跑和深度计划再通过会员墙逐步解锁。</div>
+            </div>
+            <div>
+              <div class="font-semibold text-brand-dark mb-2">Freeletics</div>
+              <div>Freeletics 的付费结构很清楚，分成 `Training Coach`、`Training + Nutrition Bundle`、`Super Bundle` 三层。</div>
+              <div>按你给的截图，3 个月档大约是 `€3.85 / week` 和 `€4.61 / week`，12 个月档大约是 `€1.92 / week` 和 `€2.50 / week`；Lifetime 促销页则出现 `€299.99` / `€349.99` 这类高客单价方案。</div>
+              <div class="text-xs text-brand-gray">可以把它理解成一条很清晰的升级链路：先卖训练订阅，再加营养，最后再卖整体健康 bundle。价格会随地区、周期和活动页波动，但卖法本身非常稳定。</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel p-8">
+          <p class="showcase-label mb-3">Product Complexity</p>
+          <h3 class="text-2xl font-semibold text-brand-dark mb-5">产品侧复杂度推断</h3>
+          <div class="space-y-5 text-sm leading-7 text-brand-gray">
+            <div>
+              <div class="font-semibold text-brand-dark mb-2">Keep 更重</div>
+              <div>多智能体编排、语音陪跑、图片识别、体测分析、跑步场景、会员分层、运动消费链路同时存在，前台花样很多，后台编排也更重。</div>
+            </div>
+            <div>
+              <div class="font-semibold text-brand-dark mb-2">Freeletics 更聚焦</div>
+              <div>单 AI Coach、计划引擎、训练内容库、反馈调优和官网转化是主轴。没有那么多角色和语音玩法，但要把“长期有效计划”做稳，本身也不便宜。</div>
+            </div>
+            <div class="soft-panel p-4 text-[12px] leading-6 text-[#5D554C]">
+              <strong class="text-brand-dark">说明：</strong>这部分不是内部真实成本，而是基于公开产品形态的推断。Keep 更像“前台丰富、后台更重”；Freeletics 更像“前台克制、后台稳定”。
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="cost-grid">
+        <article class="fact-item">
+          <p class="showcase-label mb-3">Price Band</p>
+          <h3 class="text-lg font-semibold text-brand-dark mb-3">用户价格带</h3>
+          <div class="space-y-3 text-sm leading-7 text-brand-gray">
+            <div><span class="compare-who">Keep</span>低门槛，年费也相对便宜</div>
+            <div><span class="compare-who">Freeletics</span>高客单价订阅</div>
+          </div>
+          <div class="compare-judge"><strong class="text-brand-dark">判断：</strong>Keep 更像大众入口，Freeletics 更像数字私教客单价。</div>
+        </article>
+
+        <article class="fact-item">
+          <p class="showcase-label mb-3">AI Complexity</p>
+          <h3 class="text-lg font-semibold text-brand-dark mb-3">AI 交互成本</h3>
+          <div class="space-y-3 text-sm leading-7 text-brand-gray">
+            <div><span class="compare-who">Keep</span>高</div>
+            <div><span class="compare-who">Freeletics</span>中</div>
+          </div>
+          <div class="compare-judge"><strong class="text-brand-dark">判断：</strong>Keep 有多角色、语音陪跑和更多前台交互面。</div>
+        </article>
+
+        <article class="fact-item">
+          <p class="showcase-label mb-3">Operation</p>
+          <h3 class="text-lg font-semibold text-brand-dark mb-3">内容运营成本</h3>
+          <div class="space-y-3 text-sm leading-7 text-brand-gray">
+            <div><span class="compare-who">Keep</span>高</div>
+            <div><span class="compare-who">Freeletics</span>中高</div>
+          </div>
+          <div class="compare-judge"><strong class="text-brand-dark">判断：</strong>Keep 的内容、跑步、饮食和商城链路更散；Freeletics 更集中在训练计划。</div>
+        </article>
+
+        <article class="fact-item">
+          <p class="showcase-label mb-3">Growth</p>
+          <h3 class="text-lg font-semibold text-brand-dark mb-3">增长结构</h3>
+          <div class="space-y-3 text-sm leading-7 text-brand-gray">
+            <div><span class="compare-who">Keep</span>会员 + 分层功能 + 消费链路</div>
+            <div><span class="compare-who">Freeletics</span>订阅 + 官网转化 + Bundle</div>
+          </div>
+          <div class="compare-judge"><strong class="text-brand-dark">判断：</strong>Keep 更综合，Freeletics 更纯粹。</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="updates" class="py-20 bg-brand-bg">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-12">
+        <p class="showcase-label mb-4">Keep 进展</p>
+        <h2 class="font-serif text-3xl md:text-4xl text-brand-dark mb-4">Keep 最近到底发生了什么</h2>
+        <p class="section-intro">
+          如果只看“AI 教练卡卡什么时候开始算正式推出”，最稳妥的办法不是只看媒体报道，而是把媒体发布时间、App Store 版本历史和年报披露放在一起看。
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-6">
+        <article class="panel p-8">
+          <p class="showcase-label mb-3">Timeline</p>
+          <h3 class="text-2xl font-semibold text-brand-dark mb-6">KAKA 时间线</h3>
+          <div class="space-y-5 text-sm leading-7 text-brand-gray">
+            <div>
+              <div class="font-semibold text-brand-dark">2025-03-25</div>
+              <div>公开媒体报道显示 Keep 发布 `Kinetic.ai`，并上线首个通用 AI 教练体验版 `KAKA`。这可以视为卡卡首次对外亮相的时间点。</div>
+            </div>
+            <div>
+              <div class="font-semibold text-brand-dark">2025-06-30</div>
+              <div>Keep App Store `8.5.30` 版本历史首次明确写出：`你的随身 AI 教练卡卡已上线`。这是更接近大众消费者侧发布的公开证据。</div>
+            </div>
+            <div>
+              <div class="font-semibold text-brand-dark">2025-09-24</div>
+              <div>`8.6.0` 版本开始出现多教练模式、`NRC 跑步教练`、图文生成课程、视频动作分析等更完整的 AI 叙事。</div>
+            </div>
+            <div>
+              <div class="font-semibold text-brand-dark">2025-10-20</div>
+              <div>`8.6.10` 版本加入 `特邀陪跑员`，说明 Keep 已开始把跑步陪伴做成语音人格层。</div>
+            </div>
+            <div>
+              <div class="font-semibold text-brand-dark">2026-01-11</div>
+              <div>`8.7.0` 版本继续强化 `AI 教练每日推荐`、`手机睡眠记录` 和 `AI 数据解读`，卡卡开始更像日常健康与训练助手，而不只是聊天入口。</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel p-8">
+          <p class="showcase-label mb-3">Latest Public Facts</p>
+          <h3 class="text-2xl font-semibold text-brand-dark mb-6">2026-03-25 年报里最值得看的数字</h3>
+          <div class="grid sm:grid-cols-2 gap-4 mb-5">
+            <div class="soft-panel p-4">
+              <div class="text-xs uppercase tracking-[0.18em] text-brand-gold mb-2">Revenue</div>
+              <div class="text-2xl font-semibold text-brand-dark">16.37 亿元</div>
+            </div>
+            <div class="soft-panel p-4">
+              <div class="text-xs uppercase tracking-[0.18em] text-brand-gold mb-2">MAU</div>
+              <div class="text-2xl font-semibold text-brand-dark">2180 万</div>
+            </div>
+            <div class="soft-panel p-4">
+              <div class="text-xs uppercase tracking-[0.18em] text-brand-gold mb-2">Subscribers</div>
+              <div class="text-2xl font-semibold text-brand-dark">274.2 万</div>
+            </div>
+            <div class="soft-panel p-4">
+              <div class="text-xs uppercase tracking-[0.18em] text-brand-gold mb-2">AI System</div>
+              <div class="text-2xl font-semibold text-brand-dark">10 Agents / 33 Skills</div>
+            </div>
+          </div>
+          <div class="space-y-3 text-sm leading-7 text-brand-gray">
+            <div><strong class="text-brand-dark">130 万+</strong> 用户拿到了 KAKA 生成的定制化方案。</div>
+            <div><strong class="text-brand-dark">2100 万次</strong> AI 语音指导跑步训练已经完成。</div>
+            <div><strong class="text-brand-dark">34 万次+</strong> AI 计划累计完成。</div>
+            <div><strong class="text-brand-dark">350 万次+</strong> AI 饮食图片分析累计完成。</div>
+            <div class="soft-panel p-4 text-[12px] leading-6 text-[#5D554C]">
+              <strong class="text-brand-dark">判断：</strong>这说明 Keep 已经不只是“把 AI 写进发布会”，而是把 AI 真的铺进了训练、跑步、饮食和健康数据链路里。
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="sources" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="mb-10">
+        <p class="showcase-label mb-4">资料来源</p>
+        <h2 class="font-serif text-3xl md:text-4xl text-brand-dark mb-4">资料来源</h2>
+        <p class="section-intro">
+          这一页混合使用了官方来源、App Store 公开信息和你提供的截图。涉及时间点时，优先使用带日期的公开记录；涉及用户体验时，明确标注为基于截图和产品结构的判断。
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-6">
+        <article class="panel p-8">
+          <h3 class="text-2xl font-semibold text-brand-dark mb-5">Keep</h3>
+          <ul class="space-y-3 text-sm leading-7 text-brand-gray">
+            <li><a class="source-link" href="https://apps.apple.com/cn/app/keep-%E8%B7%91%E6%AD%A5%E5%81%A5%E8%BA%AB%E9%AA%91%E8%A1%8C%E7%91%9C%E4%BC%BD-%E4%B8%80%E9%94%AE%E5%BC%80%E5%8A%A8/id952694580" target="_blank" rel="noreferrer">App Store（中国）</a></li>
+            <li><a class="source-link" href="https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0325/2026032500119.pdf" target="_blank" rel="noreferrer">2025 Annual Results（2026-03-25，HKEX）</a></li>
+            <li><a class="source-link" href="https://www.prnewswire.com/news-releases/keep-inc-announces-2025-interim-results-302533995.html" target="_blank" rel="noreferrer">2025 Interim Results（2025-08-25，PR Newswire）</a></li>
+            <li><a class="source-link" href="https://finance.sina.com.cn/stock/bxjj/2025-03-25/doc-ineqvzst9940261.shtml" target="_blank" rel="noreferrer">Kinetic.ai / KAKA 体验版公开报道（2025-03-25）</a></li>
+            <li><a class="source-link" href="https://finance.sina.com.cn/jjxw/2025-03-26/doc-ineqxyiq6172793.shtml" target="_blank" rel="noreferrer">KAKA 公开报道补充（2025-03-26）</a></li>
+            <li>你提供的 Keep 截图：用于判断角色分工、语音陪跑和前台体验；未直接嵌入页面。</li>
+          </ul>
+        </article>
+
+        <article class="panel p-8">
+          <h3 class="text-2xl font-semibold text-brand-dark mb-5">Freeletics</h3>
+          <ul class="space-y-3 text-sm leading-7 text-brand-gray">
+            <li><a class="source-link" href="https://www.freeletics.com/en/" target="_blank" rel="noreferrer">官网</a></li>
+            <li><a class="source-link" href="https://apps.apple.com/us/app/freeletics-workouts-fitness/id654810212" target="_blank" rel="noreferrer">App Store（美国）</a></li>
+            <li><a class="source-link" href="https://play.google.com/store/apps/details?id=com.freeletics.lite" target="_blank" rel="noreferrer">Google Play</a></li>
+            <li><a class="source-link" href="https://www.freeletics.com/en/blog/posts/AI-and-your-Coach/" target="_blank" rel="noreferrer">官方博客：AI and your Coach</a></li>
+            <li><a class="source-link" href="https://www.freeletics.com/en/blog/posts/how-freeletics-coach-gets-you/" target="_blank" rel="noreferrer">官方博客：How the Freeletics Coach gets you</a></li>
+            <li><a class="source-link" href="https://help.freeletics.com/hc/en-us/articles/4402770222866-How-to-train-with-the-Apple-Watch" target="_blank" rel="noreferrer">官方帮助中心：Apple Watch</a></li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-brand-dark text-center py-12">
+    <p class="text-xs text-white/50 uppercase tracking-widest font-bold mb-2">AI Fitness Research</p>
+    <p class="text-[10px] text-white/30 tracking-wider">2026 Luminaire Product Research</p>
+  </footer>
+</body>
+</html>
